@@ -32,9 +32,8 @@ class Window(QMainWindow):
     def _connectActions(self):#按鍵觸發
         self.ui.actionLoadpicture.triggered.connect(self.openSlot)
         # self.InfoAction.triggered.connect(self.pictureinfo)
-        # self.ReloadAction.triggered.connect(self.showImage)
         self.ui.actionROI.triggered.connect(self.Roi_control)
-        self.ui.actionHistogram.triggered.connect(self.Histogram)
+        self.ui.action_Image_histogram.triggered.connect(self.Histogram)
         self.ui.actionGray.triggered.connect(self.Gray_control)
         self.ui.Gray_radioButton.toggled.connect(self.onClicked)
         self.ui.actionHsv.triggered.connect(self.Hsv_control)
@@ -42,33 +41,36 @@ class Window(QMainWindow):
         #self.ui.rgbAction.triggered.connect(self.Rgb_control)
         self.ui.actionBgr.triggered.connect(self.Bgr_control)
         self.ui.Bgr_radioButton.toggled.connect(self.onClicked)
-        # self.ThgAction.triggered.connect(self.Thresholdingcontrol)
+        self.ui.actionThresholding.triggered.connect(self.Thresholdingcontrol)
         self.ui.actionHistogram_Equalization.triggered.connect(self.Histogram_Equalization_control)
         self.ui.Thresholdingsld.valueChanged[int].connect(self.changeValue)
         self.ui.Rotasld.valueChanged[int].connect(self.changeValue)
         self.ui.SizesldY.valueChanged[int].connect(self.changeValue)
         self.ui.SizesldX.valueChanged[int].connect(self.changeValue)
+        self.ui.x1sld.valueChanged[int].connect(self.changeValue)
+        self.ui.y1sld.valueChanged[int].connect(self.changeValue)
+        self.ui.x2sld.valueChanged[int].connect(self.changeValue)
+        self.ui.y2sld.valueChanged[int].connect(self.changeValue)
+        self.ui.x3sld.valueChanged[int].connect(self.changeValue)
+        self.ui.y3sld.valueChanged[int].connect(self.changeValue)
+        self.ui.updown_sld.valueChanged[int].connect(self.changeValue)
+        self.ui.leftright_sld.valueChanged[int].connect(self.changeValue)
         self.ui.actionHorizontal.triggered.connect(self.pictureflip)
         self.ui.actionVertically.triggered.connect(self.pictureflip)
         self.ui.actionright.triggered.connect(self.pictureflip)
         self.ui.actionleft.triggered.connect(self.pictureflip)
-        # self.TLAction.triggered.connect(self.PictureTranslation)
-        #self.LPFAction.triggered.connect(self.Low_Pass_Filter)
-        #self.HPFAction.triggered.connect(self.High_Pass_Filter)
-        # self.MFAction.triggered.connect(self.Mean_Filtering)
-        # self.GFAction.triggered.connect(self.Gaussia_Filtering)
-        # self.MBAction.triggered.connect(self.MedianBlur)
-        # self.BFAction.triggered.connect(self.Bilateral_filter)
-        # self.AGNFAction.triggered.connect(self.add_gaussian_noise)
-        # self.SFAction.triggered.connect(self.sobel_filter)
-        # self.LFAction.triggered.connect(self.laplacian_filter)
-        # self.AFAction.triggered.connect(self.averaging_filter)
-        # self.ATAction.triggered.connect(self.AffineTransform)
-        # self.EIction.triggered.connect(self.Emboss_Image)
-        # self.EDIction.triggered.connect(self.Edge_Detection_Image)
-        # self.CSction.triggered.connect(self.changesize)
-        # self.PTction.triggered.connect(self.Perspective_transform)
-        # self.RIction.triggered.connect(self.Result_Image)
+        self.ui.MeanFiltering_radioButton.toggled.connect(self.Mean_Filtering)
+        self.ui.GaussianFiltering_radioButton.toggled.connect(self.Gaussia_Filtering)
+        self.ui.MedianBlur_radioButton.toggled.connect(self.MedianBlur)
+        self.ui.BilateralFilter_radioButton.toggled.connect(self.Bilateral_filter)
+        self.ui.AddGaussianNoise_radioButton.toggled.connect(self.add_gaussian_noise)
+        self.ui.SobelFilter_radioButton.toggled.connect(self.sobel_filter)
+        self.ui.LaplacianFilter_radioButton.toggled.connect(self.laplacian_filter)
+        self.ui.AveragingFilter_radioButton.toggled.connect(self.averaging_filter)
+        self.ui.EmbossImage_radioButton.toggled.connect(self.Emboss_Image)
+        self.ui.EdgeDetectionImage_radioButton.toggled.connect(self.Edge_Detection_Image)
+        self.ui.action_Perspective_Transform.triggered.connect(self.Perspective_transform)
+        self.ui.ResultImage_radioButton.toggled.connect(self.Result_Image)
 
     def openSlot(self): #載入的圖片
         filename, _ = QFileDialog.getOpenFileName(self, 'Open Image', 'Image', '*.png *.jpg *.bmp')
@@ -158,6 +160,10 @@ class Window(QMainWindow):
             self.ui.Thresholdingsld.setValue(value)
             self.ui.Thresholding_label.setText(str(value))
             self.Thresholdingcontrol()
+        elif sender==self.ui.Rotasld:
+            self.ui.Rotasld.setValue(value)
+            self.ui.Rota_label.setText(str(value))
+            self.PictureRotaControl()
         elif sender==self.ui.SizesldX:
             self.ui.SizesldX.setValue(value)
             self.ui.SizeX_labe.setText(str(value))
@@ -166,10 +172,38 @@ class Window(QMainWindow):
             self.ui.SizesldY.setValue(value)
             self.ui.SizeY_labe.setText(str(value))
             self.changesize()
-        elif sender==self.ui.Rotasld:
-            self.ui.Rotasld.setValue(value)
-            self.ui.Rota_label.setText(str(value))
-            self.PictureRotaControl()
+        elif sender==self.ui.x1sld:
+            self.ui.x1sld.setValue(value)
+            self.ui.x1_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.y1sld:
+            self.ui.y1sld.setValue(value)
+            self.ui.y1_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.x2sld:
+            self.ui.x2sld.setValue(value)
+            self.ui.x2_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.y2sld:
+            self.ui.y2sld.setValue(value)
+            self.ui.y2_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.x3sld:
+            self.ui.x3sld.setValue(value)
+            self.ui.x3_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.y3sld:
+            self.ui.y3sld.setValue(value)
+            self.ui.y3_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.updown_sld:
+            self.ui.updown_sld.setValue(value)
+            self.ui.updown_label.setText(str(value))
+            self.PictureTranslation()
+        elif sender==self.ui.leftright_sld:
+            self.ui.leftright_sld.setValue(value)
+            self.ui.leftright_label.setText(str(value))
+            self.PictureTranslation()
         
     def pictureinfo(self):#圖片資訊
         img = cv.imread(self.img_path)
@@ -207,28 +241,19 @@ class Window(QMainWindow):
 
     def PictureTranslation(self):#平移
         img = cv.imread(self.img_path)
+        height, width, channel = img.shape
         rows, cols = img.shape[:2]
-        affine = np.float32([[1, 0, int(self.Txtextbox.text())], [0, 1, int(self.Tytextbox.text())]])
+        affine = np.float32([[1, 0, int(self.ui.updown_label.text())], [0, 1, int(self.ui.leftright_label.text())]])
         dst = cv.warpAffine(img, affine, (cols, rows))
-        cv.imshow("original", img)
-        cv.imshow("Translation", dst)
+        bytesPerline = 3 * width
+        Pictureflip = QImage(dst.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(Pictureflip))
     
     def changesize(self):
         img = cv.imread(self.img_path)
         rows, cols, ch = img.shape
         img_res = cv.resize(img, None, fx=(float(self.ui.SizeX_labe.text())), fy=(float(self.ui.SizeY_labe.text())), interpolation=cv.INTER_CUBIC)
         cv.imshow('resize image', img_res)
-
-    # def Low_Pass_Filter(self):
-    #     img = cv.imread(self.img_path)
-    #     #self.showpicturea(g_hpf,img)
-
-    # def High_Pass_Filter(self):
-    #     img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
-    #     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-    #     GBlur=cv.GaussianBlur(img_gray,(5,5),0)
-    #     g_hpf=img_gray-GBlur
-    #     self.showpicturea(g_hpf,img)
 
     def Mean_Filtering(self):#均值濾波 blur() boxFilter()
         img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
@@ -326,13 +351,13 @@ class Window(QMainWindow):
 
     def AffineTransform(self):
         img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
-        img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-        rows, cols, ch = img.shape
+        height, width, ch = img.shape
         pts1 = np.float32([[50, 50], [200, 50], [50, 200]])
-        pts2 = np.float32([[int(self.affinex1textbox.text()), int(self.affiney1textbox.text())], [int(self.affinex2textbox.text()), int(self.affiney2textbox.text())], [int(self.affinex3textbox.text()), int(self.affiney3textbox.text())]])
+        pts2 = np.float32([[int(self.ui.x1_label.text()), int(self.ui.y1_label.text())], [int(self.ui.x2_label.text()), int(self.ui.y2_label.text())], [int(self.ui.x3_label.text()), int(self.ui.y3_label.text())]])
         M = cv.getAffineTransform(pts1, pts2)
-        img_aff = cv.warpAffine(img, M, (cols, rows))
-        cv.imshow('affine image', img_aff)
+        img_aff = cv.warpAffine(img, M, (width, height))
+        Pictureflip = QImage(img_aff.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(Pictureflip))
 
     def OnMouseAction(self,event,x,y,flags,param):
         global refPT,cropping,num
