@@ -16,13 +16,21 @@
 >> * 影像資訊
 >>> - [x] 直方圖
 >>> - [x] 影像大小
+>>> - [x] Histogram Equalization
 >> * 濾波
->>> - [x] 影像大小
->>> - [x] 影像大小
->>> - [x] 影像大小
->>> - [x] 影像大小
->>> - [x] 影像大小
->>> - [x] 影像大小
+>>> - [x] 均值濾波(Mean Filtering)
+>>> - [x] 影像浮雕(Emboss Image)
+>>> - [x] 高斯濾波(Gaussian Filtering)
+>>> - [x] 邊緣檢測(Edge Detection Image)
+>>> - [x] 中值濾波(MedianBlur)
+>>> - [x] 雙邊濾波(Bilateral filter)
+>>> - [x] 增加高斯噪點(Add gaussian noise)
+>>> - [x] Result Image
+>>> - [x] 拉普拉斯算子(Laplacian filter)
+>>> - [x] 平均濾波器(Averaging filter)
 >> * 其他功能
->>> - [x] 直方圖
->>> - [x] 影像大小
+>>> - [x] ROI
+>>> - [x] 透視投影轉換(Perspective Transform)
+>>> - [x] Erosion 影像侵蝕
+>>> - [x] Dilation 影像膨脹
+>>> - [x] cornerHarris
