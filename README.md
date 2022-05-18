@@ -1,15 +1,15 @@
-# opencv-python-school
+# **opencv-python-school**
 * 使用opencv進行數位影像處理，使用的語言是python。
 * UI介面使用Qtdesign進行設計。
 ---
-## B0
+## **B0**
 > 把放在主程式的UI介面分離出來。
 ---
-## B0.5
-> 利用Qt Designer重新建立版面，重建一些code，減少重複的部分，舊程式碼與新UI介面的連結，重新命名主程式檔案
+## **B0.5**
+> 利用Qt Designer重新建立版面，重建一些code，減少重複的部分，舊程式碼與新UI介面的連結，重新命名主程式檔案。
 ---
-## B1
-> UI:新增 morphological operations & cornerHarris
+## **B1**
+> UI:新增 morphological operations & cornerHarris 
 > 程式碼:新增 影像侵蝕(Erosion) & 影像膨脹(Dilation)
 ---
 ## 目前有的功能:
