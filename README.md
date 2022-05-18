@@ -6,11 +6,12 @@
 > 把放在主程式的UI介面分離出來。
 ---
 ## **B0.5**
-> 利用Qt Designer重新建立版面，重建一些code，減少重複的部分，舊程式碼與新UI介面的連結，重新命名主程式檔案。
+> 利用Qt Designer重新建立版面，重建一些code，減少重複的部分，舊程式碼與新UI介面的連結，重新命名主程式檔案。(除了圖片資料)
 ---
 ## **B1**
 > * UI:新增 morphological operations & cornerHarris 
 > * 程式碼:新增 影像侵蝕(Erosion) & 影像膨脹(Dilation)
+> * 修復圖片資料
 ---
 ## 目前有的功能:
 >> - [x] 載入圖片
@@ -25,7 +26,7 @@
 >> - [x] 放大縮小
 > * 影像資訊
 >> - [x] 直方圖
->> - [ ] 影像大小
+>> - [x] 影像大小
 >> - [x] Histogram Equalization
 > * 濾波
 >> - [x] 均值濾波(Mean Filtering)
