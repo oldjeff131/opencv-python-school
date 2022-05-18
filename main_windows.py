@@ -356,6 +356,7 @@ class Window(QMainWindow):
         pts2 = np.float32([[int(self.ui.x1_label.text()), int(self.ui.y1_label.text())], [int(self.ui.x2_label.text()), int(self.ui.y2_label.text())], [int(self.ui.x3_label.text()), int(self.ui.y3_label.text())]])
         M = cv.getAffineTransform(pts1, pts2)
         img_aff = cv.warpAffine(img, M, (width, height))
+        bytesPerline = 3 * width
         Pictureflip = QImage(img_aff.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
         self.ui.RevisePicture.setPixmap(QPixmap.fromImage(Pictureflip))
 
