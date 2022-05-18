@@ -7,7 +7,6 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import*
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -581,8 +580,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionLoadpicture = QtWidgets.QAction(MainWindow)
         self.actionLoadpicture.setObjectName("actionLoadpicture")
-        self.actionclose = QtWidgets.QAction(MainWindow)
-        self.actionclose.setObjectName("actionclose")
+        self.actioninfo = QtWidgets.QAction(MainWindow)
+        self.actioninfo.setObjectName("actioninfo")
         self.action_Perspective_Transform = QtWidgets.QAction(MainWindow)
         self.action_Perspective_Transform.setObjectName("action_Perspective_Transform")
         self.actionHsv = QtWidgets.QAction(MainWindow)
@@ -610,8 +609,7 @@ class Ui_MainWindow(object):
         self.actionHistogram = QtWidgets.QAction(MainWindow)
         self.actionHistogram.setObjectName("actionHistogram")
         self.menu.addAction(self.actionLoadpicture)
-        self.menu.addAction(self.actionclose)
-        self.menu.addSeparator()
+        self.menu.addAction(self.actioninfo)
         self.menu_2.addAction(self.actionHsv)
         self.menu_2.addAction(self.actionGray)
         self.menu_2.addAction(self.actionBgr)
@@ -629,12 +627,12 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menu_Perspective_Transform.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(6)
+        self.tabWidget.setCurrentIndex(7)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "4a830212"))
         self.groupBox_2.setTitle(_translate("MainWindow", "旋轉"))
         self.Rota_label.setText(_translate("MainWindow", "0"))
         self.groupBox_3.setTitle(_translate("MainWindow", "大小"))
@@ -695,7 +693,7 @@ class Ui_MainWindow(object):
         self.menu_Perspective_Transform.setTitle(_translate("MainWindow", "功能"))
         self.menuROTA.setTitle(_translate("MainWindow", "翻轉"))
         self.actionLoadpicture.setText(_translate("MainWindow", "載入圖片"))
-        self.actionclose.setText(_translate("MainWindow", "關閉"))
+        self.actioninfo.setText(_translate("MainWindow", "圖片資料"))
         self.action_Perspective_Transform.setText(_translate("MainWindow", "透視投影轉換(Perspective Transform)"))
         self.actionHsv.setText(_translate("MainWindow", "Hsv"))
         self.actionGray.setText(_translate("MainWindow", "Gray"))
@@ -709,3 +707,4 @@ class Ui_MainWindow(object):
         self.actionVertically.setText(_translate("MainWindow", "水平翻轉"))
         self.actionHorizontal.setText(_translate("MainWindow", "垂直翻轉"))
         self.actionHistogram.setText(_translate("MainWindow", "Histogram"))
+

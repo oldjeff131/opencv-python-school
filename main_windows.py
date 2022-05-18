@@ -40,7 +40,7 @@ class Window(QMainWindow):
         self.buttongroup2.addButton(self.ui.x5radioButton)
         self.buttongroup2.addButton(self.ui.x7radioButton)
         self.ui.actionLoadpicture.triggered.connect(self.openSlot)
-        # self.InfoAction.triggered.connect(self.pictureinfo)
+        self.ui.actioninfo.triggered.connect(self.pictureinfo)
         self.ui.actionROI.triggered.connect(self.Roi_control)
         self.ui.action_Image_histogram.triggered.connect(self.Histogram)
         self.ui.actionGray.triggered.connect(self.Gray_control)
@@ -85,7 +85,7 @@ class Window(QMainWindow):
         self.ui.x3radioButton.toggled.connect(self.convolution_onclick)
         self.ui.x5radioButton.toggled.connect(self.convolution_onclick)
         self.ui.x7radioButton.toggled.connect(self.convolution_onclick)
-        self.ui.cornerHarrissld.valueChanged.connect(self.cornerHarrissldchange)
+        # self.ui.cornerHarrissld.valueChanged.connect(self.cornerHarrissldchange)
 
     def openSlot(self): #載入的圖片
         filename, _ = QFileDialog.getOpenFileName(self, 'Open Image', 'Image', '*.png *.jpg *.bmp')
