@@ -8,9 +8,9 @@
 ## **B0.5**
 > 利用Qt Designer重新建立版面，重建一些code，減少重複的部分，舊程式碼與新UI介面的連結，重新命名主程式檔案。
 ---
-## **B1**
-> UI:新增 morphological operations & cornerHarris 
-> 程式碼:新增 影像侵蝕(Erosion) & 影像膨脹(Dilation)
+## ** B1 **
+> * UI:新增 morphological operations & cornerHarris 
+> * 程式碼:新增 影像侵蝕(Erosion) & 影像膨脹(Dilation)
 ---
 ## 目前有的功能:
 >> - [x] 載入圖片
