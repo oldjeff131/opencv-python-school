@@ -11,7 +11,7 @@
 ## **B1**
 > * UI:新增 morphological operations & cornerHarris 
 > * 程式碼:新增 影像侵蝕(Erosion) & 影像膨脹(Dilation)
-> * 修復圖片資料
+> * 修復圖片資料程式碼
 ---
 ## 目前有的功能:
 >> - [x] 載入圖片
