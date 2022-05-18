@@ -34,22 +34,24 @@ class Window(QMainWindow):
         # self.InfoAction.triggered.connect(self.pictureinfo)
         # self.ReloadAction.triggered.connect(self.showImage)
         self.ui.actionROI.triggered.connect(self.Roi_control)
-        # self.IeHmAction.triggered.connect(self.Histogram)
+        self.ui.actionHistogram.triggered.connect(self.Histogram)
         self.ui.actionGray.triggered.connect(self.Gray_control)
-        self.ui.actionGray.triggered.connect(self.onClicked)
+        self.ui.Gray_radioButton.toggled.connect(self.onClicked)
         self.ui.actionHsv.triggered.connect(self.Hsv_control)
-        self.ui.actionHsv.triggered.connect(self.onClicked)
+        self.ui.Hsv_radioButton.toggled.connect(self.onClicked)
         #self.ui.rgbAction.triggered.connect(self.Rgb_control)
         self.ui.actionBgr.triggered.connect(self.Bgr_control)
-        self.ui.actionBgr.triggered.connect(self.onClicked)
+        self.ui.Bgr_radioButton.toggled.connect(self.onClicked)
         # self.ThgAction.triggered.connect(self.Thresholdingcontrol)
         self.ui.actionHistogram_Equalization.triggered.connect(self.Histogram_Equalization_control)
         self.ui.Thresholdingsld.valueChanged[int].connect(self.changeValue)
-        self.ui.Rotasld.valueChanged[int].connect(self.changeRotaValue)
-        # self.FHAction.triggered.connect(self.pictureFHflip)
-        # self.FVAction.triggered.connect(self.pictureFVflip)
-        # self.FRAction.triggered.connect(self.pictureFRflip)
-        # self.FLAction.triggered.connect(self.pictureFLflip)
+        self.ui.Rotasld.valueChanged[int].connect(self.changeValue)
+        self.ui.SizesldY.valueChanged[int].connect(self.changeValue)
+        self.ui.SizesldX.valueChanged[int].connect(self.changeValue)
+        self.ui.actionHorizontal.triggered.connect(self.pictureflip)
+        self.ui.actionVertically.triggered.connect(self.pictureflip)
+        self.ui.actionright.triggered.connect(self.pictureflip)
+        self.ui.actionleft.triggered.connect(self.pictureflip)
         # self.TLAction.triggered.connect(self.PictureTranslation)
         #self.LPFAction.triggered.connect(self.Low_Pass_Filter)
         #self.HPFAction.triggered.connect(self.High_Pass_Filter)
@@ -132,7 +134,6 @@ class Window(QMainWindow):
         self.ui.RevisePicture.resize(self.qImg.size())
 
     def Thresholdingcontrol(self):
-        self.ui.Thresholding_label.setText(str(self.ui.Thresholdingsld.value()))
         gray = cv.cvtColor(self.img, cv.COLOR_BGR2GRAY)
         ret, result = cv.threshold(gray, self.ui.Thresholdingsld.value(), 255, cv.THRESH_BINARY)
         height, width = result.shape
@@ -155,27 +156,27 @@ class Window(QMainWindow):
         sender=self.sender()
         if sender==self.ui.Thresholdingsld:
             self.ui.Thresholdingsld.setValue(value)
-        else:
-            self.ui.Thresholdingsld.setValue(value)
-        self.ui.Thresholding_label.setText(str(value))
-        self.Thresholdingcontrol()
-
-    def changeRotaValue(self,value):
-        sender=self.sender()
-        if sender==self.ui.Rotasld:
+            self.ui.Thresholding_label.setText(str(value))
+            self.Thresholdingcontrol()
+        elif sender==self.ui.SizesldX:
+            self.ui.SizesldX.setValue(value)
+            self.ui.SizeX_labe.setText(str(value))
+            self.changesize()
+        elif sender==self.ui.SizesldY:
+            self.ui.SizesldY.setValue(value)
+            self.ui.SizeY_labe.setText(str(value))
+            self.changesize()
+        elif sender==self.ui.Rotasld:
             self.ui.Rotasld.setValue(value)
-        else:
-            self.ui.Rotasld.setValue(value)
-        self.ui.Rota_label.setText(str(value))
-        self.PictureRotaControl()
-
+            self.ui.Rota_label.setText(str(value))
+            self.PictureRotaControl()
+        
     def pictureinfo(self):#圖片資訊
         img = cv.imread(self.img_path)
         size=img.shape
         QMessageBox.information(self,"Picture_info",str(size)+"\n(高度,寬度,像素)")
 
     def PictureRotaControl(self):#角度調整
-        self.ui.Rota_label.setText(str(self.ui.Rotasld.value()))
         img = cv.imread(self.img_path)
         height, width, channel = img.shape
         center = (width // 2, height // 2)
@@ -185,41 +186,24 @@ class Window(QMainWindow):
         Pictureflip = QImage(Pictureflip.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
         self.ui.RevisePicture.setPixmap(QPixmap.fromImage(Pictureflip))
 
-    def pictureFHflip(self): #垂直翻轉
-        img = cv.imread(self.img_path)
-        Pictureflip = cv.flip(img, 0)
-        height, width, channel = img.shape
-        bytesPerline = 3 * width
-        Pictureflip = QImage(Pictureflip.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabel.setPixmap(QPixmap.fromImage(Pictureflip))
-
-    def pictureFVflip(self): #水平翻轉
-        img = cv.imread(self.img_path)
-        Pictureflip = cv.flip(img, 1)
-        height, width, channel = img.shape
-        bytesPerline = 3 * width
-        Pictureflip = QImage(Pictureflip.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabel.setPixmap(QPixmap.fromImage(Pictureflip))
-
-    def pictureFLflip(self): #左翻翻轉
+    def pictureflip(self): #翻轉
+        FlipBtn=self.sender()
         img = cv.imread(self.img_path)
         height, width, channel = img.shape
-        center = (width // 2, height // 2)
-        Pictureflip=cv.getRotationMatrix2D(center,-90,1.0)
-        Pictureflip = cv.warpAffine(img, Pictureflip, (width, height))
+        if FlipBtn.text()=="垂直翻轉":
+            Pictureflip = cv.flip(img, 0)
+        elif FlipBtn.text()=="水平翻轉":
+            Pictureflip = cv.flip(img, 1)
+        else:
+            center = (width // 2, height // 2)
+            if FlipBtn.text()=="左翻90度":
+                Pictureflip=cv.getRotationMatrix2D(center,-90,1.0)
+            elif FlipBtn.text()=="右翻90度":
+                Pictureflip = cv.getRotationMatrix2D(center,90,1.0)
+            Pictureflip = cv.warpAffine(img, Pictureflip, (width, height))            
         bytesPerline = 3 * width
         Pictureflip = QImage(Pictureflip.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabel.setPixmap(QPixmap.fromImage(Pictureflip))
-         
-    def pictureFRflip(self): #右翻翻轉
-        img = cv.imread(self.img_path)
-        height, width, channel = img.shape
-        center = (width // 2, height // 2)
-        Pictureflip = cv.getRotationMatrix2D(center,90,1.0)
-        Pictureflip = cv.warpAffine(img, Pictureflip, (width, height))
-        bytesPerline = 3 * width
-        Pictureflip = QImage(Pictureflip.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabel.setPixmap(QPixmap.fromImage(Pictureflip))
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(Pictureflip))
 
     def PictureTranslation(self):#平移
         img = cv.imread(self.img_path)
@@ -229,6 +213,12 @@ class Window(QMainWindow):
         cv.imshow("original", img)
         cv.imshow("Translation", dst)
     
+    def changesize(self):
+        img = cv.imread(self.img_path)
+        rows, cols, ch = img.shape
+        img_res = cv.resize(img, None, fx=(float(self.ui.SizeX_labe.text())), fy=(float(self.ui.SizeY_labe.text())), interpolation=cv.INTER_CUBIC)
+        cv.imshow('resize image', img_res)
+
     # def Low_Pass_Filter(self):
     #     img = cv.imread(self.img_path)
     #     #self.showpicturea(g_hpf,img)
@@ -334,12 +324,6 @@ class Window(QMainWindow):
         img = QImage(img.data, width, height, bytesPerline, QImage.Format_Grayscale8).rgbSwapped()
         self.ui.RevisePicture.setPixmap(QPixmap.fromImage(img))
 
-    def changesize(self):
-        img = cv.imread(self.img_path)
-        rows, cols, ch = img.shape
-        img_res = cv.resize(img, None, fx=(float(self.Sizextextbox.text())), fy=(float(self.Sizeytextbox.text())), interpolation=cv.INTER_CUBIC)
-        cv.imshow('resize image', img_res)
-
     def AffineTransform(self):
         img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
         img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
@@ -393,16 +377,12 @@ class Window(QMainWindow):
         radioBtn=self.sender()
         if radioBtn.isChecked():
             if radioBtn.text()=="Gray":
-                self.Gray_control(self)
+                self.Gray_control()
             elif radioBtn.text()=="Hsv":
-                self.Hsv_control(self)
+                self.Hsv_control()
             elif radioBtn.text()=="Bgr":
-                self.Bgr_control(self)
-
-class valuechange():
-    def value():
-        a=b
-
+                self.Bgr_control()
+    
 if __name__=="__main__":
     app=QApplication(sys.argv)
     win=Window()
