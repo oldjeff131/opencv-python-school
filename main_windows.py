@@ -26,91 +26,51 @@ class Window(QMainWindow):
         self.setWindowTitle("4a830212_opencv_homework")
         self.resize(1000,800)
         self.ui=creat_ui.Ui_MainWindow()
-        self._createActions() 
-        self._createMenuBar() #選單分類
+        self.ui.setupUi(self)
         self._connectActions()
 
-
-    def _createMenuBar(self): #選單設定
-        menuBar=self.menuBar()
-        fileMenu=QMenu("&檔案(File)",self)
-        menuBar.addMenu(fileMenu)
-        fileMenu.addAction(self.OpenImageAction)
-        fileMenu.addAction(self.ReloadAction)
-        fileMenu.addAction(self.InfoAction)
-
-        SettingMenu=menuBar.addMenu("&設定(Setting)")#母選單
-        SettingMenu.addAction(self.ROIAction)
-        SettingMenu.addAction(self.IeHmAction)
-        IeHmActionMenu=SettingMenu.addMenu("&色彩空間(IeHmAction)")#子選單
-        IeHmActionMenu.addAction(self.grayAction)
-        IeHmActionMenu.addAction(self.hsvAction)
-        IeHmActionMenu.addAction(self.bgrAction)
-        #IeHmActionMenu.addAction(self.rgbAction)
-        RotateActionMenu=SettingMenu.addMenu("&旋轉(Rotate)")#旋轉選單
-        RotateActionMenu.addAction(self.FHAction)#水平
-        RotateActionMenu.addAction(self.FVAction)#垂直
-        RotateActionMenu.addAction(self.FLAction)#翻轉90度
-        RotateActionMenu.addAction(self.FRAction)#翻轉270度
-        SettingMenu.addAction(self.TLAction)#平移
-        SettingMenu.addAction(self.ATAction)#仿射轉換
-        SettingMenu.addAction(self.CSction)
-        SettingMenu.addAction(self.PTction)
-     
-
-        ImageMenu=menuBar.addMenu("&Image Processing")
-        ImageMenu.addAction(self.ThgAction)
-        ImageMenu.addAction(self.HmEnAction)
-        FilteringActionMenu=ImageMenu.addMenu("&濾波(Filtering)")
-        #FilteringActionMenu.addAction(self.LPFAction)
-        #FilteringActionMenu.addAction(self.HPFAction)
-        FilteringActionMenu.addAction(self.MFAction)
-        FilteringActionMenu.addAction(self.GFAction)
-        FilteringActionMenu.addAction(self.MBAction)
-        FilteringActionMenu.addAction(self.BFAction)
-        FilteringActionMenu.addAction(self.AGNFAction)
-        FilteringActionMenu.addAction(self.SFAction)
-        FilteringActionMenu.addAction(self.LFAction)
-        FilteringActionMenu.addAction(self.AFAction)
-        FilteringActionMenu.addAction(self.EIction)
-        FilteringActionMenu.addAction(self.EDIction)
-        FilteringActionMenu.addAction(self.RIction)
-
     def _connectActions(self):#按鍵觸發
-        self.OpenImageAction.triggered.connect(self.openSlot)
-        self.InfoAction.triggered.connect(self.pictureinfo)
-        self.ReloadAction.triggered.connect(self.showImage)
-        self.ROIAction.triggered.connect(self.Roi_control)
-        self.IeHmAction.triggered.connect(self.Histogram)
-        self.grayAction.triggered.connect(self.Gray_control)
-        self.hsvAction.triggered.connect(self.Hsv_control)
-        #self.rgbAction.triggered.connect(self.Rgb_control)
-        self.bgrAction.triggered.connect(self.Bgr_control)
-        self.ThgAction.triggered.connect(self.Thresholdingcontrol)
-        self.HmEnAction.triggered.connect(self.Histogram_Equalization_control)
-        self.sld.valueChanged[int].connect(self.changeValue)
-        self.sld1.valueChanged[int].connect(self.changeRotaValue)
-        self.FHAction.triggered.connect(self.pictureFHflip)
-        self.FVAction.triggered.connect(self.pictureFVflip)
-        self.FRAction.triggered.connect(self.pictureFRflip)
-        self.FLAction.triggered.connect(self.pictureFLflip)
-        self.TLAction.triggered.connect(self.PictureTranslation)
-        #self.LPFAction.triggered.connect(self.Low_Pass_Filter)
-        #self.HPFAction.triggered.connect(self.High_Pass_Filter)
-        self.MFAction.triggered.connect(self.Mean_Filtering)
-        self.GFAction.triggered.connect(self.Gaussia_Filtering)
-        self.MBAction.triggered.connect(self.MedianBlur)
-        self.BFAction.triggered.connect(self.Bilateral_filter)
-        self.AGNFAction.triggered.connect(self.add_gaussian_noise)
-        self.SFAction.triggered.connect(self.sobel_filter)
-        self.LFAction.triggered.connect(self.laplacian_filter)
-        self.AFAction.triggered.connect(self.averaging_filter)
-        self.ATAction.triggered.connect(self.AffineTransform)
-        self.EIction.triggered.connect(self.Emboss_Image)
-        self.EDIction.triggered.connect(self.Edge_Detection_Image)
-        self.CSction.triggered.connect(self.changesize)
-        self.PTction.triggered.connect(self.Perspective_transform)
-        self.RIction.triggered.connect(self.Result_Image)
+        self.ui.actionLoadpicture.triggered.connect(self.openSlot)
+        # self.InfoAction.triggered.connect(self.pictureinfo)
+        self.ui.actionROI.triggered.connect(self.Roi_control)
+        self.ui.action_Image_histogram.triggered.connect(self.Histogram)
+        self.ui.actionGray.triggered.connect(self.Gray_control)
+        self.ui.Gray_radioButton.toggled.connect(self.onClicked)
+        self.ui.actionHsv.triggered.connect(self.Hsv_control)
+        self.ui.Hsv_radioButton.toggled.connect(self.onClicked)
+        #self.ui.rgbAction.triggered.connect(self.Rgb_control)
+        self.ui.actionBgr.triggered.connect(self.Bgr_control)
+        self.ui.Bgr_radioButton.toggled.connect(self.onClicked)
+        self.ui.actionThresholding.triggered.connect(self.Thresholdingcontrol)
+        self.ui.actionHistogram_Equalization.triggered.connect(self.Histogram_Equalization_control)
+        self.ui.Thresholdingsld.valueChanged[int].connect(self.changeValue)
+        self.ui.Rotasld.valueChanged[int].connect(self.changeValue)
+        self.ui.SizesldY.valueChanged[int].connect(self.changeValue)
+        self.ui.SizesldX.valueChanged[int].connect(self.changeValue)
+        self.ui.x1sld.valueChanged[int].connect(self.changeValue)
+        self.ui.y1sld.valueChanged[int].connect(self.changeValue)
+        self.ui.x2sld.valueChanged[int].connect(self.changeValue)
+        self.ui.y2sld.valueChanged[int].connect(self.changeValue)
+        self.ui.x3sld.valueChanged[int].connect(self.changeValue)
+        self.ui.y3sld.valueChanged[int].connect(self.changeValue)
+        self.ui.updown_sld.valueChanged[int].connect(self.changeValue)
+        self.ui.leftright_sld.valueChanged[int].connect(self.changeValue)
+        self.ui.actionHorizontal.triggered.connect(self.pictureflip)
+        self.ui.actionVertically.triggered.connect(self.pictureflip)
+        self.ui.actionright.triggered.connect(self.pictureflip)
+        self.ui.actionleft.triggered.connect(self.pictureflip)
+        self.ui.MeanFiltering_radioButton.toggled.connect(self.Mean_Filtering)
+        self.ui.GaussianFiltering_radioButton.toggled.connect(self.Gaussia_Filtering)
+        self.ui.MedianBlur_radioButton.toggled.connect(self.MedianBlur)
+        self.ui.BilateralFilter_radioButton.toggled.connect(self.Bilateral_filter)
+        self.ui.AddGaussianNoise_radioButton.toggled.connect(self.add_gaussian_noise)
+        self.ui.SobelFilter_radioButton.toggled.connect(self.sobel_filter)
+        self.ui.LaplacianFilter_radioButton.toggled.connect(self.laplacian_filter)
+        self.ui.AveragingFilter_radioButton.toggled.connect(self.averaging_filter)
+        self.ui.EmbossImage_radioButton.toggled.connect(self.Emboss_Image)
+        self.ui.EdgeDetectionImage_radioButton.toggled.connect(self.Edge_Detection_Image)
+        self.ui.action_Perspective_Transform.triggered.connect(self.Perspective_transform)
+        self.ui.ResultImage_radioButton.toggled.connect(self.Result_Image)
 
     def openSlot(self): #載入的圖片
         filename, _ = QFileDialog.getOpenFileName(self, 'Open Image', 'Image', '*.png *.jpg *.bmp')
@@ -126,8 +86,7 @@ class Window(QMainWindow):
         height, width, Channel = self.img.shape
         bytesPerline = 3 * width
         self.qImg = QImage(self.img.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabel.setPixmap(QPixmap.fromImage(self.qImg))
-        self.picturelabe3.setPixmap(QPixmap.fromImage(self.qImg))
+        self.ui.OriginPicture.setPixmap(QPixmap.fromImage(self.qImg))
         
     def Roi_control(self): #ROI
         img = cv.imread(self.img_path)
@@ -149,8 +108,8 @@ class Window(QMainWindow):
         height, width = gray.shape
         bytesPerline = 1 * width
         self.qImg = QImage(gray, width, height, bytesPerline, QImage.Format_Grayscale8).rgbSwapped()
-        self.picturelabe2.setPixmap(QPixmap.fromImage(self.qImg))
-        self.picturelabe2.resize(self.qImg.size())
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(self.qImg))
+        self.ui.RevisePicture.resize(self.qImg.size())
     
     # def Rgb_control(self): #Rgb
     #     rgb = cv.cvtColor(self.img, cv.COLOR_BGR2RGB)
@@ -165,26 +124,25 @@ class Window(QMainWindow):
         height, width, channel = bgr.shape
         bytesPerline = 3 * width
         self.qImg = QImage(bgr, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabe2.setPixmap(QPixmap.fromImage(self.qImg))
-        self.picturelabe2.resize(self.qImg.size())
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(self.qImg))
+        self.ui.RevisePicture.resize(self.qImg.size())
 
     def Hsv_control(self): #Hsv
         hsv = cv.cvtColor(self.img, cv.COLOR_BGR2HSV)
         height, width, channel = hsv.shape
         bytesPerline = 3 * width
         self.qImg = QImage(hsv, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabe2.setPixmap(QPixmap.fromImage(self.qImg))
-        self.picturelabe2.resize(self.qImg.size())
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(self.qImg))
+        self.ui.RevisePicture.resize(self.qImg.size())
 
     def Thresholdingcontrol(self):
-        self.sldvaluelabel.setText(str(self.sld.value()))
         gray = cv.cvtColor(self.img, cv.COLOR_BGR2GRAY)
-        ret, result = cv.threshold(gray, self.sld.value(), 255, cv.THRESH_BINARY)
+        ret, result = cv.threshold(gray, self.ui.Thresholdingsld.value(), 255, cv.THRESH_BINARY)
         height, width = result.shape
         bytesPerline = 1 * width
         self.qimg = QImage(result, width, height, bytesPerline, QImage.Format_Grayscale8).rgbSwapped()
-        self.picturelabe3.setPixmap(QPixmap.fromImage(self.qimg))
-        self.picturelabe3.resize(self.qimg.size())
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(self.qimg))
+        self.ui.RevisePicture.resize(self.qimg.size())
     
     def Histogram_Equalization_control (self):
         img = cv.imread(self.img_path)
@@ -198,92 +156,104 @@ class Window(QMainWindow):
 
     def changeValue(self,value):
         sender=self.sender()
-        if sender==self.sld:
-            self.sld.setValue(value)
-        else:
-            self.sld.setValue(value)
-        self.sldvaluelabel.setText(str(value))
-        self.Thresholdingcontrol()
-
-    def changeRotaValue(self,value):
-        sender=self.sender()
-        if sender==self.sld:
-            self.sld1.setValue(value)
-        else:
-            self.sld1.setValue(value)
-        self.sldvaluelabel1.setText(str(value))
-        self.PictureRotaControl()
-
+        if sender==self.ui.Thresholdingsld:
+            self.ui.Thresholdingsld.setValue(value)
+            self.ui.Thresholding_label.setText(str(value))
+            self.Thresholdingcontrol()
+        elif sender==self.ui.Rotasld:
+            self.ui.Rotasld.setValue(value)
+            self.ui.Rota_label.setText(str(value))
+            self.PictureRotaControl()
+        elif sender==self.ui.SizesldX:
+            self.ui.SizesldX.setValue(value)
+            self.ui.SizeX_labe.setText(str(value))
+            self.changesize()
+        elif sender==self.ui.SizesldY:
+            self.ui.SizesldY.setValue(value)
+            self.ui.SizeY_labe.setText(str(value))
+            self.changesize()
+        elif sender==self.ui.x1sld:
+            self.ui.x1sld.setValue(value)
+            self.ui.x1_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.y1sld:
+            self.ui.y1sld.setValue(value)
+            self.ui.y1_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.x2sld:
+            self.ui.x2sld.setValue(value)
+            self.ui.x2_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.y2sld:
+            self.ui.y2sld.setValue(value)
+            self.ui.y2_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.x3sld:
+            self.ui.x3sld.setValue(value)
+            self.ui.x3_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.y3sld:
+            self.ui.y3sld.setValue(value)
+            self.ui.y3_label.setText(str(value))
+            self.AffineTransform()
+        elif sender==self.ui.updown_sld:
+            self.ui.updown_sld.setValue(value)
+            self.ui.updown_label.setText(str(value))
+            self.PictureTranslation()
+        elif sender==self.ui.leftright_sld:
+            self.ui.leftright_sld.setValue(value)
+            self.ui.leftright_label.setText(str(value))
+            self.PictureTranslation()
+        
     def pictureinfo(self):#圖片資訊
         img = cv.imread(self.img_path)
         size=img.shape
         QMessageBox.information(self,"Picture_info",str(size)+"\n(高度,寬度,像素)")
 
     def PictureRotaControl(self):#角度調整
-        self.sldvaluelabel1.setText(str(self.sld1.value()))
         img = cv.imread(self.img_path)
         height, width, channel = img.shape
         center = (width // 2, height // 2)
-        Pictureflip=cv.getRotationMatrix2D(center,self.sld1.value(),1.0)
+        Pictureflip=cv.getRotationMatrix2D(center,self.ui.Rotasld.value(),1.0)
         Pictureflip = cv.warpAffine(img, Pictureflip, (width, height))
         bytesPerline = 3 * width
         Pictureflip = QImage(Pictureflip.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabel.setPixmap(QPixmap.fromImage(Pictureflip))
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(Pictureflip))
 
-    def pictureFHflip(self): #垂直翻轉
-        img = cv.imread(self.img_path)
-        Pictureflip = cv.flip(img, 0)
-        height, width, channel = img.shape
-        bytesPerline = 3 * width
-        Pictureflip = QImage(Pictureflip.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabel.setPixmap(QPixmap.fromImage(Pictureflip))
-
-    def pictureFVflip(self): #水平翻轉
-        img = cv.imread(self.img_path)
-        Pictureflip = cv.flip(img, 1)
-        height, width, channel = img.shape
-        bytesPerline = 3 * width
-        Pictureflip = QImage(Pictureflip.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabel.setPixmap(QPixmap.fromImage(Pictureflip))
-
-    def pictureFLflip(self): #左翻翻轉
+    def pictureflip(self): #翻轉
+        FlipBtn=self.sender()
         img = cv.imread(self.img_path)
         height, width, channel = img.shape
-        center = (width // 2, height // 2)
-        Pictureflip=cv.getRotationMatrix2D(center,-90,1.0)
-        Pictureflip = cv.warpAffine(img, Pictureflip, (width, height))
+        if FlipBtn.text()=="垂直翻轉":
+            Pictureflip = cv.flip(img, 0)
+        elif FlipBtn.text()=="水平翻轉":
+            Pictureflip = cv.flip(img, 1)
+        else:
+            center = (width // 2, height // 2)
+            if FlipBtn.text()=="左翻90度":
+                Pictureflip=cv.getRotationMatrix2D(center,-90,1.0)
+            elif FlipBtn.text()=="右翻90度":
+                Pictureflip = cv.getRotationMatrix2D(center,90,1.0)
+            Pictureflip = cv.warpAffine(img, Pictureflip, (width, height))            
         bytesPerline = 3 * width
         Pictureflip = QImage(Pictureflip.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabel.setPixmap(QPixmap.fromImage(Pictureflip))
-         
-    def pictureFRflip(self): #右翻翻轉
-        img = cv.imread(self.img_path)
-        height, width, channel = img.shape
-        center = (width // 2, height // 2)
-        Pictureflip = cv.getRotationMatrix2D(center,90,1.0)
-        Pictureflip = cv.warpAffine(img, Pictureflip, (width, height))
-        bytesPerline = 3 * width
-        Pictureflip = QImage(Pictureflip.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-        self.picturelabel.setPixmap(QPixmap.fromImage(Pictureflip))
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(Pictureflip))
 
     def PictureTranslation(self):#平移
         img = cv.imread(self.img_path)
+        height, width, channel = img.shape
         rows, cols = img.shape[:2]
-        affine = np.float32([[1, 0, int(self.Txtextbox.text())], [0, 1, int(self.Tytextbox.text())]])
+        affine = np.float32([[1, 0, int(self.ui.updown_label.text())], [0, 1, int(self.ui.leftright_label.text())]])
         dst = cv.warpAffine(img, affine, (cols, rows))
-        cv.imshow("original", img)
-        cv.imshow("Translation", dst)
+        bytesPerline = 3 * width
+        Pictureflip = QImage(dst.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(Pictureflip))
     
-    # def Low_Pass_Filter(self):
-    #     img = cv.imread(self.img_path)
-    #     #self.showpicturea(g_hpf,img)
-
-    # def High_Pass_Filter(self):
-    #     img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
-    #     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-    #     GBlur=cv.GaussianBlur(img_gray,(5,5),0)
-    #     g_hpf=img_gray-GBlur
-    #     self.showpicturea(g_hpf,img)
+    def changesize(self):
+        img = cv.imread(self.img_path)
+        rows, cols, ch = img.shape
+        img_res = cv.resize(img, None, fx=(float(self.ui.SizeX_labe.text())), fy=(float(self.ui.SizeY_labe.text())), interpolation=cv.INTER_CUBIC)
+        cv.imshow('resize image', img_res)
 
     def Mean_Filtering(self):#均值濾波 blur() boxFilter()
         img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
@@ -377,23 +347,18 @@ class Window(QMainWindow):
         height, width, channel = or_img.shape
         bytesPerline = 1 * width
         img = QImage(img.data, width, height, bytesPerline, QImage.Format_Grayscale8).rgbSwapped()
-        self.picturelabe4.setPixmap(QPixmap.fromImage(img))
-
-    def changesize(self):
-        img = cv.imread(self.img_path)
-        rows, cols, ch = img.shape
-        img_res = cv.resize(img, None, fx=(float(self.Sizextextbox.text())), fy=(float(self.Sizeytextbox.text())), interpolation=cv.INTER_CUBIC)
-        cv.imshow('resize image', img_res)
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(img))
 
     def AffineTransform(self):
         img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
-        img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-        rows, cols, ch = img.shape
+        height, width, ch = img.shape
         pts1 = np.float32([[50, 50], [200, 50], [50, 200]])
-        pts2 = np.float32([[int(self.affinex1textbox.text()), int(self.affiney1textbox.text())], [int(self.affinex2textbox.text()), int(self.affiney2textbox.text())], [int(self.affinex3textbox.text()), int(self.affiney3textbox.text())]])
+        pts2 = np.float32([[int(self.ui.x1_label.text()), int(self.ui.y1_label.text())], [int(self.ui.x2_label.text()), int(self.ui.y2_label.text())], [int(self.ui.x3_label.text()), int(self.ui.y3_label.text())]])
         M = cv.getAffineTransform(pts1, pts2)
-        img_aff = cv.warpAffine(img, M, (cols, rows))
-        cv.imshow('affine image', img_aff)
+        img_aff = cv.warpAffine(img, M, (width, height))
+        bytesPerline = 3 * width
+        Pictureflip = QImage(img_aff.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
+        self.ui.RevisePicture.setPixmap(QPixmap.fromImage(Pictureflip))
 
     def OnMouseAction(self,event,x,y,flags,param):
         global refPT,cropping,num
@@ -434,6 +399,16 @@ class Window(QMainWindow):
             num=0
             i=i+1
 
+    def onClicked(self):
+        radioBtn=self.sender()
+        if radioBtn.isChecked():
+            if radioBtn.text()=="Gray":
+                self.Gray_control()
+            elif radioBtn.text()=="Hsv":
+                self.Hsv_control()
+            elif radioBtn.text()=="Bgr":
+                self.Bgr_control()
+    
 if __name__=="__main__":
     app=QApplication(sys.argv)
     win=Window()
