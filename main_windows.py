@@ -435,9 +435,9 @@ class Window(QMainWindow):
         radioBtn=self.sender()
         if radioBtn.isChecked():
             if radioBtn.text()=="Dilation 影像膨脹":
-                self.Erosion()
-            elif radioBtn.text()=="Erosion 影像侵蝕":
                 self.Dilation()
+            elif radioBtn.text()=="Erosion 影像侵蝕":
+                self.Erosion()
  
     # def cornerHarrissldchange(self,value):
     #     img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
