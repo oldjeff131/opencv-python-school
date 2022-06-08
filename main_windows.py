@@ -12,6 +12,7 @@ from PyQt5.QtGui import *
 from pyrsistent import PTypeError
 from scipy.misc import electrocardiogram
 from scipy import ndimage
+from sqlalchemy import true
 import creat_ui
 
 refPT=[] 
@@ -19,6 +20,7 @@ cropping = False
 refPTx=[0,0,0,0]
 refPTy=[0,0,0,0]
 num=0
+convolution=3
 
 class Window(QMainWindow):
     def __init__(self,parent=None): #視窗建立
@@ -30,17 +32,24 @@ class Window(QMainWindow):
         self._connectActions()
 
     def _connectActions(self):#按鍵觸發
+        self.buttongroup = QButtonGroup(self)
+        self.buttongroup.addButton(self.ui.DilationradioButton)
+        self.buttongroup.addButton(self.ui.ErosionradioButton)
+        self.buttongroup2 = QButtonGroup(self)
+        self.buttongroup2.addButton(self.ui.x3radioButton)
+        self.buttongroup2.addButton(self.ui.x5radioButton)
+        self.buttongroup2.addButton(self.ui.x7radioButton)
         self.ui.actionLoadpicture.triggered.connect(self.openSlot)
-        # self.InfoAction.triggered.connect(self.pictureinfo)
+        self.ui.actioninfo.triggered.connect(self.pictureinfo)
         self.ui.actionROI.triggered.connect(self.Roi_control)
         self.ui.action_Image_histogram.triggered.connect(self.Histogram)
         self.ui.actionGray.triggered.connect(self.Gray_control)
-        self.ui.Gray_radioButton.toggled.connect(self.onClicked)
+        self.ui.Gray_radioButton.toggled.connect(self.Gray_control)
         self.ui.actionHsv.triggered.connect(self.Hsv_control)
-        self.ui.Hsv_radioButton.toggled.connect(self.onClicked)
+        self.ui.Hsv_radioButton.toggled.connect(self.Hsv_control)
         #self.ui.rgbAction.triggered.connect(self.Rgb_control)
         self.ui.actionBgr.triggered.connect(self.Bgr_control)
-        self.ui.Bgr_radioButton.toggled.connect(self.onClicked)
+        self.ui.Bgr_radioButton.toggled.connect(self.Bgr_control)
         self.ui.actionThresholding.triggered.connect(self.Thresholdingcontrol)
         self.ui.actionHistogram_Equalization.triggered.connect(self.Histogram_Equalization_control)
         self.ui.Thresholdingsld.valueChanged[int].connect(self.changeValue)
@@ -71,6 +80,12 @@ class Window(QMainWindow):
         self.ui.EdgeDetectionImage_radioButton.toggled.connect(self.Edge_Detection_Image)
         self.ui.action_Perspective_Transform.triggered.connect(self.Perspective_transform)
         self.ui.ResultImage_radioButton.toggled.connect(self.Result_Image)
+        self.ui.ErosionradioButton.toggled.connect(self.morphological_operations_onclick)
+        self.ui.DilationradioButton.toggled.connect(self.morphological_operations_onclick)
+        self.ui.x3radioButton.toggled.connect(self.convolution_onclick)
+        self.ui.x5radioButton.toggled.connect(self.convolution_onclick)
+        self.ui.x7radioButton.toggled.connect(self.convolution_onclick)
+        # self.ui.cornerHarrissld.valueChanged.connect(self.cornerHarrissldchange)
 
     def openSlot(self): #載入的圖片
         filename, _ = QFileDialog.getOpenFileName(self, 'Open Image', 'Image', '*.png *.jpg *.bmp')
@@ -111,14 +126,6 @@ class Window(QMainWindow):
         self.ui.RevisePicture.setPixmap(QPixmap.fromImage(self.qImg))
         self.ui.RevisePicture.resize(self.qImg.size())
     
-    # def Rgb_control(self): #Rgb
-    #     rgb = cv.cvtColor(self.img, cv.COLOR_BGR2RGB)
-    #     height, width, channel = rgb.shape
-    #     bytesPerline = 3 * width
-    #     self.qImg = QImage(rgb, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-    #     self.picturelabe2.setPixmap(QPixmap.fromImage(self.qImg))
-    #     self.picturelabe2.resize(self.qImg.size())
-
     def Bgr_control(self): #Bgr
         bgr = cv.cvtColor(self.img, cv.COLOR_RGB2BGR)
         height, width, channel = bgr.shape
@@ -349,6 +356,20 @@ class Window(QMainWindow):
         img = QImage(img.data, width, height, bytesPerline, QImage.Format_Grayscale8).rgbSwapped()
         self.ui.RevisePicture.setPixmap(QPixmap.fromImage(img))
 
+    def Erosion(self):
+        global convolution
+        img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
+        kernel = np.ones((convolution,convolution), np.uint8)
+        erosion = cv.erode(img, kernel, iterations = 1)
+        cv.imshow('Erosion', erosion)
+    
+    def Dilation(self):
+        global convolution
+        img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
+        kernel = np.ones((convolution,convolution), np.uint8)
+        dilate = cv.dilate(img, kernel, iterations = 1)
+        cv.imshow('Dilation', dilate)
+
     def AffineTransform(self):
         img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
         height, width, ch = img.shape
@@ -398,17 +419,36 @@ class Window(QMainWindow):
             refPTy[i]=0
             num=0
             i=i+1
-
-    def onClicked(self):
+                
+    def convolution_onclick(self):
+        global convolution
         radioBtn=self.sender()
         if radioBtn.isChecked():
-            if radioBtn.text()=="Gray":
-                self.Gray_control()
-            elif radioBtn.text()=="Hsv":
-                self.Hsv_control()
-            elif radioBtn.text()=="Bgr":
-                self.Bgr_control()
-    
+            if radioBtn.text()=="3X3":
+                convolution=3
+            elif radioBtn.text()=="5X5":
+                convolution=5
+            elif radioBtn.text()=="7X7":
+                convolution=7
+
+    def morphological_operations_onclick(self):
+        radioBtn=self.sender()
+        if radioBtn.isChecked():
+            if radioBtn.text()=="Dilation 影像膨脹":
+                self.Dilation()
+            elif radioBtn.text()=="Erosion 影像侵蝕":
+                self.Erosion()
+ 
+    # def cornerHarrissldchange(self,value):
+    #     img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
+    #     gray=np.float32(img)
+    #     self.ui.cornerHarrissld.setValue(value)
+    #     self.ui.cornerHarris_labe.setText(str(value))
+    #     dst=cv.cornerHarris(scr=gray,blockSize=5,ksize=7,k=0.04)
+    #     a=dst>self.ui.cornerHarris_labe.text*dst.max()
+    #     img[a]=[0,0,255]
+    #     cv.imshow('corners')
+
 if __name__=="__main__":
     app=QApplication(sys.argv)
     win=Window()
