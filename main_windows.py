@@ -278,7 +278,7 @@ class Window(QMainWindow):
         img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
         img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         img_median = cv.medianBlur(img_gray, 7)
-        self.showpicturea(img_median,img)
+        self.showpicturea(img_median,img)medianBlurcheckBox
     
     def Bilateral_filter(self):
         img = cv.imread(self.img_path,cv.COLOR_BGR2GRAY)
